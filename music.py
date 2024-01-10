@@ -3,25 +3,43 @@ from pytube import YouTube
 import os
 import shutil    
 
-def get_link(name): # Youtube has different ids for each video. So we are finding those to download vids.
-    s = Search(f"{name}")  #searching from title of the yt vid
-    yt_id = s.results #this gives us a list
-    video_ids = [video.video_id for video in yt_id] #scraping the data that we want
+music_folder = 'D:\_Projetos Maiores\DJ Bot\DJ-Bot-Beats_Discord-Bot\music'
 
-    video_id = video_ids[0] #getting the first element
-    base_url = f"https://www.youtube.com/watch?v={video_id}" #making our link ready
-    return base_url
-
-def download_video(name):
-    s = Search(f"{name}") 
-    yt_id = s.results
+def get_link(name):
+    search_music = Search(f"{name}")
+    yt_id = search_music.results
     video_ids = [video.video_id for video in yt_id]
 
     video_id = video_ids[0]
     base_url = f"https://www.youtube.com/watch?v={video_id}"
-    yt = YouTube(base_url)
-    audio_stream = yt.streams.filter(only_audio=True, file_extension="mp4").first() #downloading the first Result and only mp4
-    audio_stream.download(output_path='music') # we are deciding where we want to install
+    return base_url
+
+def download_video(name):
+    search_music = Search(f"{name}")
+    yt_id = search_music.results
+    video_ids = [video.video_id for video in yt_id]
+
+    if (name.startswith("https://")):
+        print("Processing URL:", name)
+        yt = YouTube(name)
+    else:
+        print("Processing query:", name)
+        video_id = video_ids[0]
+        base_url = f"https://www.youtube.com/watch?v={video_id}"
+        yt = YouTube(base_url)
+
+    output_path = 'music'
+    os.makedirs(output_path, exist_ok=True)
+
+    try:
+        audio_stream = yt.streams.filter(only_audio=True, file_extension="mp4").first()
+        if audio_stream:
+            audio_stream.download(output_path=output_path)
+            print(f"Downloaded: {yt.title}")
+        else:
+            print(f"No available audio streams for: {yt.title}")
+    except Exception as e:
+        print(f"Error downloading video: {e}")
 
 def find_music():
     return (os.listdir("music")[0])
@@ -29,6 +47,15 @@ def find_music():
 def delete_audio():
     shutil.rmtree('music')
 
-def remove_files(dir):
-    for f in os.listdir(dir):
-        os.remove(os.path.join(dir, f))
+def remove_files():
+    for filename in os.listdir(music_folder):
+        file_path = os.path.join(music_folder, filename)
+
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as err:
+            print('Erro ao deletar arquivos: ', err)
+
