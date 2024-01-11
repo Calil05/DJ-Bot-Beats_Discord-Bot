@@ -5,7 +5,7 @@ from music import get_link, download_video, find_music, remove_files, delete_aud
 from time import sleep
 import asyncio
 from discord import FFmpegPCMAudio
-from key import path
+from key import ffmpeg_path
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", help_command=None, intents=intents)
@@ -57,9 +57,9 @@ async def play(ctx,*,title):
 
     try:
         async with ctx.typing():
-            player = FFmpegPCMAudio(executable=path, source=f"music/{find_music()}") #executable part is where we downloaded ffmpeg. We are writing our find_mmusic name func because , we want to bot to play our desired song fro the folder
+            player = FFmpegPCMAudio(executable=r'D:\_Projetos Maiores\DJ Bot\ffmpeg\bin\ffmpeg.exe', source=f"music/{find_music()}")
             ctx.voice_client.play(player, after=lambda e: print('Erro no Player: %s' % e) if e else None)
-        await ctx.send('Reproduzindo a musica: {}'.format(find_music())) #sening confirmmation
+        await ctx.send('Reproduzindo a musica: {}'.format(find_music()))
 
         while ctx.voice_client.is_playing():
             await asyncio.sleep(1)

@@ -1,5 +1,6 @@
 from pytube import Search
 from pytube import YouTube
+from pytube.exceptions import AgeRestrictedError
 import os
 import shutil    
 from key import music_path
@@ -21,8 +22,9 @@ def download_video(name):
     video_ids = [video.video_id for video in yt_id]
 
     if (name.startswith("https://")):
-        print("Processando URL:", name)
-        yt = YouTube(name)
+        fixed_name = name.replace('watch?v=', 'embed/')
+        print("Processando URL:", fixed_name)
+        yt = YouTube(fixed_name, use_oauth=True, allow_oauth_cache=True)
     else:
         print("Processando query:", name)
         video_id = video_ids[0]
@@ -38,9 +40,10 @@ def download_video(name):
             audio_stream.download(output_path=output_path)
             print("Baixado: {}".format(yt.title))
         else:
-            print("Sem fontes de audio: {}".format(yt.title))
+            print("Sem fontes de áudio: {}".format(yt.title))
+
     except Exception as err:
-        print("Erro no download: {}".format(err))
+            print("Erro no download: {}".format(err))
 
 def find_music():
     return (os.listdir("music")[0])
