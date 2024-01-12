@@ -16,20 +16,24 @@ async def on_ready():
     except Exception as err:
         print("Não foi possivel conectar devido ao erro: {}".format(err))
 
-# Comandos de Musica
-        
-bot.add_command(join)
-bot.add_command(pause)
-bot.add_command(resume)
-bot.add_command(leave)
-bot.add_command(play)
-bot.add_command(loop)
-bot.add_command(help)
-bot.add_command(misterio)
 
 # Comandos Basicos
 
 bot.add_command(oi)
+bot.add_command(help)
+bot.add_command(misterio)
+
+# Comandos de Canal de Voz
+
+bot.add_command(join)
+bot.add_command(leave)
+
+# Comandos de Musica
+
+bot.add_command(pause)
+bot.add_command(resume)
+bot.add_command(play)
+bot.add_command(loop)
 
 # @bot.event
 # async def on_message(message):

@@ -37,7 +37,7 @@ async def leave(ctx):
     if ctx.voice_client:
         await ctx.guild.voice_client.disconnect()
         await ctx.send("Saindo do canal de voz")
-        sleep(1)
+        sleep(2)
         remove_files()
         music_playing = False
         music_loop = False
