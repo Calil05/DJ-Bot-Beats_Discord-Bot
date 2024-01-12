@@ -5,6 +5,7 @@ from music import get_link, download_video, find_music, remove_files, delete_aud
 from time import sleep
 import asyncio
 from discord import FFmpegPCMAudio
+from lista_comandos import comandos_bot, info_bot
 from key import ffmpeg_path
 
 intents = discord.Intents.all()
@@ -105,7 +106,24 @@ async def loop(ctx):
 
 @bot.command(name="oi")
 async def oi(ctx):
-    await ctx.send("Oi!")
+    await ctx.send('Ola {}!'.format(ctx.author.name))
+
+@bot.command(name="help")
+async def help(ctx):
+    await ctx.send(comandos_bot)
+
+@bot.command(name='info')
+async def info(ctx):
+    await ctx.send(info_bot)
+
+@bot.command(name="misterio")
+async def misterio(ctx):
+    await ctx.author.send("CUIDADO!")
+    sleep(30)
+    await ctx.author.send("Eu vou te achar...")
+    sleep(180)
+    await ctx.author.send("Estou chegando...")
+
 
 saudacoes = ['oi', 'ola', 'iae', 'iai']
 async def process_messages(message):

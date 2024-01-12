@@ -1,6 +1,6 @@
 from discord.ext import commands
 from key import token
-from commands import join, pause, resume, leave, play, loop, oi, process_messages
+from commands import join, pause, resume, leave, play, loop, oi, help, misterio
 import discord
 import sys
 
@@ -24,6 +24,8 @@ bot.add_command(resume)
 bot.add_command(leave)
 bot.add_command(play)
 bot.add_command(loop)
+bot.add_command(help)
+bot.add_command(misterio)
 
 # Comandos Basicos
 
